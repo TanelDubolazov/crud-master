@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  api-gateway:
+    build: ./srcs/api-gateway
+    ports:
+      - "3000:3000"
+
+  inventory-app:
+    build: ./srcs/inventory-app
+    ports:
+      - "8080:8080"
+
+  billing-app:
+    build: ./srcs/billing-app
+    ports:
+      - "8081:8081"
+
+  postgres-inventory:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: inventory
+
+  postgres-billing:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: billing
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
