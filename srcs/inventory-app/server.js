@@ -10,12 +10,14 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api/movies", movieRoutes);
 
-// Sync Database and Start Server
-sequelize.sync().then(() => {
+// Sync DB and start server
+sequelize.sync()
+  .then(() => {
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
-        console.log(`Inventory API running on port ${PORT}`);
+      console.log(`Inventory API running on port ${PORT}`);
     });
-}).catch((err) => {
+  })
+  .catch((err) => {
     console.error("Failed to sync database:", err.message);
-});
+  });
