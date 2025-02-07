@@ -4,12 +4,12 @@ const yaml = require("js-yaml");
 const express = require("express");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const { configureProxy } = require("./proxy"); // Import proxy configuration
 
 // Load .env if present
 require("dotenv").config();
 
-// Attempt to load the OpenAPI spec from openapi.yaml in the same directory
+// Attempt to load the OpenAPI spec from openapi.yaml
 let openApiDocument = {};
 try {
   const openApiFile = fs.readFileSync(path.join(__dirname, "openapi.yaml"), "utf8");
@@ -21,20 +21,16 @@ try {
 // Create an Express app
 const app = express();
 
-// Serve the Swagger docs at /api-docs if available
+// Serve Swagger docs at /api-docs if available
 if (Object.keys(openApiDocument).length > 0) {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 }
 
-// Logging
+// Logging middleware
 app.use(morgan("dev"));
 
-// Proxy configuration (Option A)
-const inventoryApiUrl = process.env.INVENTORY_API_URL;
-app.use("/api/movies", createProxyMiddleware({
-  target: `${inventoryApiUrl}/api/movies`,
-  changeOrigin: true,
-}));
+// Apply proxy middleware
+configureProxy(app);
 
 // Parse JSON and URL-encoded data
 app.use(express.json());

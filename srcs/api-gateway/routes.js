@@ -1,9 +1,10 @@
+// routes.js
 const express = require("express");
 const amqp = require("amqplib");
 
 const router = express.Router();
 
-const QUEUE_NAME = process.env.QUEUE_NAME || "billing_queue";   // You can also define "QUEUE_NAME" in .env if you want
+const QUEUE_NAME = process.env.QUEUE_NAME || "billing_queue";
 const RABBITMQ_URL = process.env.RABBITMQ_URL || "amqp://localhost";
 
 router.post("/", async (req, res) => {
