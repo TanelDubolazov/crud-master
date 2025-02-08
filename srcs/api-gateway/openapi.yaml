@@ -3,13 +3,94 @@ info:
   title: API Gateway
   version: "1.0"
   description: Minimal OpenAPI description for the API Gateway
+
 paths:
   /api/movies:
     get:
-      summary: Proxy to Inventory Service to get movies
+      summary: Retrieve all movies
+      parameters:
+        - name: title
+          in: query
+          description: Filter movies by title
+          schema:
+            type: string
       responses:
         "200":
           description: Successful response
+    post:
+      summary: Create a new movie entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "201":
+          description: Movie successfully created
+    delete:
+      summary: Delete all movies from the database
+      responses:
+        "200":
+          description: Successfully deleted all movies
+
+  /api/movies/{id}:
+    get:
+      summary: Retrieve a single movie by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+        "404":
+          description: Movie not found
+    put:
+      summary: Update a single movie by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Successfully updated movie
+        "404":
+          description: Movie not found
+    delete:
+      summary: Delete a single movie by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully deleted movie
+        "404":
+          description: Movie not found
+
   /api/billing:
     post:
       summary: Send a billing message via RabbitMQ

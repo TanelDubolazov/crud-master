@@ -7,10 +7,8 @@ const movieRoutes = require("./app/routes/movieRoutes");
 const app = express();
 app.use(bodyParser.json());
 
-// Routes
 app.use("/api/movies", movieRoutes);
 
-// Sync DB and start server
 sequelize.sync()
   .then(() => {
     const PORT = process.env.PORT || 8080;

@@ -1,26 +1,27 @@
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
-const sequelize = require("./app/config/database");
-const { consumeMessages } = require("./app/services/rabbitmqService");
+const cors = require("cors");
+const db = require("./app/config/database.js");
+const { healthCheck } = require("./app/controllers/healthcheck");
+const { consumeMessages } = require("./amqpConsumer");
 
 const app = express();
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.send("Billing API is running.");
-});
+app.get("/health", healthCheck);
 
-// Sync database, then start server and RabbitMQ consumer
-sequelize.sync()
+db.sync()
   .then(() => {
-    const PORT = process.env.PORT || 8081;
-    app.listen(PORT, () => {
-      console.log(`Billing API is running on port ${PORT}`);
-      consumeMessages(); // Start consuming messages from RabbitMQ
+    console.log("Database synced successfully.");
+
+    consumeMessages();
+
+    const port = process.env.PORT || 8081;
+    app.listen(port, () => {
+      console.log(`Billing API listening on port ${port}`);
     });
   })
   .catch((err) => {
-    console.error("Failed to sync database:", err.message);
+    console.error("Failed to sync database:", err);
   });

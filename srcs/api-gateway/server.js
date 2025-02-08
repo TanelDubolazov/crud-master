@@ -4,12 +4,10 @@ const yaml = require("js-yaml");
 const express = require("express");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
-const { configureProxy } = require("./proxy"); // Import proxy configuration
+const { configureProxy } = require("./proxy"); 
 
-// Load .env if present
 require("dotenv").config();
 
-// Attempt to load the OpenAPI spec from openapi.yaml
 let openApiDocument = {};
 try {
   const openApiFile = fs.readFileSync(path.join(__dirname, "openapi.yaml"), "utf8");
@@ -18,29 +16,22 @@ try {
   console.error("⚠️ Could not load openapi.yaml:", err.message);
 }
 
-// Create an Express app
 const app = express();
 
-// Serve Swagger docs at /api-docs if available
 if (Object.keys(openApiDocument).length > 0) {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 }
 
-// Logging middleware
 app.use(morgan("dev"));
 
-// Apply proxy middleware
 configureProxy(app);
 
-// Parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Billing routes (RabbitMQ)
 const billingRoutes = require("./routes");
 app.use("/api/billing", billingRoutes);
 
-// Start the server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`API Gateway is running on port ${PORT}`);

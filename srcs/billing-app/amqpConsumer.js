@@ -1,8 +1,9 @@
 const amqp = require("amqplib");
-const Order = require("../models/order");
+const Order = require("./app/models/order");
 require("dotenv").config();
 
 const QUEUE_NAME = process.env.QUEUE_NAME || "billing_queue";
+
 
 async function consumeMessages() {
   try {
@@ -19,7 +20,7 @@ async function consumeMessages() {
 
         try {
           await Order.create(orderData);
-          console.log("Order saved:", orderData);
+          console.log("Order saved to DB:", orderData);
         } catch (error) {
           console.error("Failed to save order:", error);
         }
