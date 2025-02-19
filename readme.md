@@ -41,20 +41,27 @@ setup.sh
 This project depends on .env files of the neccesary variables and setup. The main root folder and root folders for each of the apps in /srcs include .env.example which can be directly copied into .env files. Default values have been added in the example files for testing purposes only. 
 
 Next step is to build the vm-s using vagrant : 
+
 ```vagrant up``` 
+
 *Creating the vm's may take several minutes or more*
 
 #### Helpful commands :
+
 ```vagrant status``` shows status of all vm machines 
+
 ```vagrant ssh *vm name*``` ssh into the selected machine
+
 ```vagrant destroy -f``` destroy all vagrant machines
 
 ```sudo pm2 status``` displays pm2 status in the machine
+
 ![image](/img/pm2status.png)
 
 For testing endpoints you can start and stop the services in the vm\'s:
 
 ``` sudo pm2 stop ``` - make sure to add correct app at the end
+
 ```sudo pm2 start``` - this can be used to start the sevice back up
 
  You can choose from one of these apps to stop  : 
@@ -62,7 +69,9 @@ For testing endpoints you can start and stop the services in the vm\'s:
 
 #### Example: 
 To stop the billing_app you need to ```vagrant ssh billing-vm``` and then you can use :
+ 
  ```sudo pm2 stop billing_app```
+
 ![image](/img/pm2stop.png)
 
 This will stop the RabbitMQ service and even if new entry requests are made they should not be visible in the database.
