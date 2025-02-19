@@ -22,13 +22,17 @@ This exercise focuses on setting up a microservices architecture with an API Gat
 ## Setup
 
 ### Quick setup
-For a quick setup you can use ```setup.sh``` script in the root, which creates .env files from default values and includes all commands to setup and interact with the vm-s.
+For a quick setup you can use `setup.sh` script in the root, which creates .env files from default values and includes all commands to setup and interact with the vm-s.
 
 Before running the script, you need to grant execute permissions: 
-```chmod +x setup_project.sh```
+```
+chmod +x setup_project.sh
+```
 
 To start the interactive setup, simply run:
-```setup.sh```
+```
+setup.sh
+```
 
 ![image](/img/setup.png)
 
@@ -37,26 +41,40 @@ To start the interactive setup, simply run:
 This project depends on .env files of the neccesary variables and setup. The main root folder and root folders for each of the apps in /srcs include .env.example which can be directly copied into .env files. Default values have been added in the example files for testing purposes only. 
 
 Next step is to build the vm-s using vagrant : 
-```vagrant up``` 
+```
+vagrant up
+``` 
 
 *Creating the vm's may take several minutes or more*
 
 #### Helpful commands :
-```vagrant status``` shows status of all vm machines 
+```
+vagrant status
+``` shows status of all vm machines 
 
-```vagrant ssh``` add vm name to this command ssh into the selected machine
+```
+vagrant ssh
+``` add vm name to this command ssh into the selected machine
 
-```vagrant destroy -f``` destroy all vagrant machines
+```
+vagrant destroy -f
+``` destroy all vagrant machines
 
-```sudo pm2 status``` displays pm2 status in the machine
+```
+sudo pm2 status
+``` displays pm2 status in the machine
 
 ![image](/img/pm2status.png)
 
 For testing endpoints you can start and stop the services in the vm\'s:
 
-``` sudo pm2 stop ``` - make sure to add correct app at the end
+``` 
+sudo pm2 stop 
+``` make sure to add correct app at the end
 
-```sudo pm2 start``` - this can be used to start the sevice back up
+```
+sudo pm2 start
+``` - this can be used to start the sevice back up
 
  You can choose from one of these apps to stop  : 
  `inventory_app` `gateway_app` `billing_app` 
@@ -64,7 +82,9 @@ For testing endpoints you can start and stop the services in the vm\'s:
 #### Example: 
 To stop the billing_app you need to ```vagrant ssh billing-vm``` and then you can use :
  
- ```sudo pm2 stop billing_app```
+ ```
+ sudo pm2 stop billing_app
+ ```
 
 ![image](/img/pm2stop.png)
 
